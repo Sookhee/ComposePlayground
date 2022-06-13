@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Animatable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -16,7 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.sookhee.composeplayground.ui.theme.ComposePlaygroundTheme
@@ -33,7 +39,7 @@ import kotlinx.coroutines.launch
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-@OptIn(ExperimentalPagerApi::class)
+@ExperimentalPagerApi
 class TabLayoutActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,13 +63,22 @@ class TabLayoutActivity : ComponentActivity() {
                             state = pagerState,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = Temp)
+                                .background(color = Color.Black)
                         ) { page ->
-                            Text(
-                                text = tabItems[page],
-                                modifier = Modifier.padding(50.dp),
-                                color = Color.White
-                            )
+
+                            if (page == 0) {
+                                LazyColumn {
+                                    items(10) {
+                                        MyPost()
+                                    }
+                                }
+                            } else {
+                                Text(
+                                    text = tabItems[page],
+                                    modifier = Modifier.padding(50.dp),
+                                    color = Color.White
+                                )
+                            }
                         }
                     }
                 }
@@ -72,7 +87,7 @@ class TabLayoutActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@ExperimentalPagerApi
 @Composable
 fun TabLayout(tabItems: List<String>, pagerState: PagerState) {
     TabRow(
@@ -99,7 +114,7 @@ fun TabLayout(tabItems: List<String>, pagerState: PagerState) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@ExperimentalPagerApi
 @Composable
 fun Tab(index: Int, tab: String, pagerState: PagerState) {
     val coroutineScope = rememberCoroutineScope()
@@ -131,4 +146,65 @@ fun Tab(index: Int, tab: String, pagerState: PagerState) {
             }
         }
     )
+}
+
+@Composable
+fun MyPost(isChecked: Boolean = false) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
+            .background(color = Temp)
+            .padding(horizontal = 16.dp, vertical = 16.dp),
+        horizontalAlignment = Alignment.End
+    ) {
+        if (!isChecked) {
+            Box(
+                modifier = Modifier
+                    .width(8.dp)
+                    .height(8.dp)
+                    .clip(CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Yellow)
+                )
+            }
+        }
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+            Image(
+                painter = painterResource(R.drawable.rectangle_34),
+                contentDescription = "",
+                modifier = Modifier
+                    .width(40.dp)
+                    .height(40.dp)
+                    .padding(end = 16.dp)
+            )
+
+            Column {
+                Row {
+                    Text(text = "강남구 00동", color = Color.White, fontSize = 20.sp)
+                    Text(text = " - ", color = Color.White, fontSize = 20.sp)
+                    Text(text = "5분 전", color = Color.White, fontSize = 20.sp)
+                }
+
+                Text(text = "말 많은 11번째 코알라", color = Color.White, fontSize = 12.sp)
+            }
+        }
+
+    }
+}
+
+@Composable
+@Preview(
+    device = Devices.DEFAULT
+)
+fun PreviewMyPost() {
+    ComposePlaygroundTheme {
+        MyPost()
+    }
 }
