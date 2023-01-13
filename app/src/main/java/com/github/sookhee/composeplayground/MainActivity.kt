@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -16,8 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.sookhee.composeplayground.ui.theme.ComposePlaygroundTheme
 import com.github.sookhee.composeplayground.ui.theme.Yellow
+import com.google.accompanist.pager.ExperimentalPagerApi
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,9 +31,16 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.padding(20.dp)
                 ) {
-                    ButtonWithFunction("TabLayout") {
-                        val intent = Intent(context, TabLayoutActivity::class.java)
-                        context.startActivity(intent)
+                    Column {
+                        ButtonWithFunction("TabLayout") {
+                            val intent = Intent(context, TabLayoutActivity::class.java)
+                            context.startActivity(intent)
+                        }
+
+                        ButtonWithFunction("CustomButton") {
+                            val intent = Intent(context, ButtonActivity::class.java)
+                            context.startActivity(intent)
+                        }
                     }
                 }
             }
