@@ -41,6 +41,11 @@ class MainActivity : ComponentActivity() {
                             val intent = Intent(context, ButtonActivity::class.java)
                             context.startActivity(intent)
                         }
+
+                        ButtonWithFunction("Random Activity") {
+                            val intent = Intent(context, RandomActivity::class.java)
+                            context.startActivity(intent)
+                        }
                     }
                 }
             }
